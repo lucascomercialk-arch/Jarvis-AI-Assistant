@@ -1,23 +1,16 @@
 from flask import Flask, jsonify, render_template
+from routes.automation_routes import automation_bp
 
 app =  Flask(__name__)
+
+app.register_blueprint(automation_bp)
 
 @app.route('/')
 def home():
     return render_template('dashboard.html')
 
-@app.route('/comando/ola')
-def ola():
-    return jsonify({"msg":"Olá chefe"})
 
-@app.route('/status')
-def status():
-    return jsonify({"status": "ok", "msg": "Jarvis funcionando"})
-
-@app.route('/abrir')
-def abrir():
-    return jsonify({"msg":"Comando Executado"})
-
+# Modos Jarvis
 
 if __name__ == '__main__':
     app.run(debug=True)

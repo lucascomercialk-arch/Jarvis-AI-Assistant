@@ -77,6 +77,34 @@
                 document.getElementsById('resposta').innerText = data.msg;
             });
         } 
+        function modoClinica(){
+            fetch('/modo/clinica')
+            .then(resp => resp.json())
+            .then(data =>{
+                document.getElementsById('resposta').innerText = data.msg;
+            });
+        } 
+        function modoFaculdade(){
+            fetch('/modo/faculdade')
+            .then(resp => resp.json())
+            .then(data =>{
+                document.getElementsById('resposta').innerText = data.msg;
+            });
+        } 
+        function modoProjeto(){
+            fetch('/modo/projeto')
+            .then(resp => resp.json())
+            .then(data =>{
+                document.getElementsById('resposta').innerText = data.msg;
+            });
+        } 
+        function modoVendas(){
+            fetch('/modo/vendas')
+            .then(resp => resp.json())
+            .then(data =>{
+                document.getElementsById('resposta').innerText = data.msg;
+            });
+        } 
 
         function limparTela(){
                 document.getElementsById('resposta').innerText = "";
