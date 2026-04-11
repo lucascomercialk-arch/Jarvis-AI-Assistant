@@ -200,15 +200,16 @@
         function adicionarTarefa(){
             const input = document.getElementById('novaTarefa');
             const texto = input.value.trim();
-
+    
             if(!texto){
                 document.getElementById('resposta').innerText="Digite uma tarefa antes de adicionar";
                 return;
             }
+
             fetch('/tarefas',{
                 method: 'POST',
                 headers:{
-                    'Contente-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({texto: texto})
             })
@@ -223,7 +224,7 @@
             fetch('/tarefas')
             .then(resp => resp.json())
             .then(tarefas => {
-                const lista = document.getElementById('listaTarefa');
+                const lista = document.getElementById('listaTarefas');
                 lista.innerHTML = '';
 
                 tarefas.forEach(tarefa => {
@@ -233,6 +234,12 @@
                 });
             });
         }
+
+        document.getElementById('novaTarefa').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter'){
+                adicionarTarefa();
+            }
+        });
     </script>
 
 </body>
