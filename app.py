@@ -6,6 +6,9 @@ app =  Flask(__name__)
 def home():
     return render_template('dashboard.html')
 
+@app.route('/comando/ola')
+def ola():
+    return jsonify({"msg":"Olá chefe"})
 
 @app.route('/status')
 def status():
@@ -14,6 +17,7 @@ def status():
 @app.route('/abrir')
 def abrir():
     return jsonify({"msg":"Comando Executado"})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
