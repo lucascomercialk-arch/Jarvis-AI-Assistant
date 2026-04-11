@@ -1,41 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jarvis 2.0</title>
 </head>
+
 <body>
 
     <style>
-        body{
+        body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #0b0f14;
             color: #e6edf3;
         }
-        .container{
+
+        .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 30px;
-            
+
         }
-        .header h1{
+
+        .header h1 {
             margin: 0;
             color: #00ffd5;
             font-size: 36px;
         }
+
         .header p {
             margin-top: 8px;
             color: #9fb0c0;
 
-        .grid{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 20px;
+            }
 
         }
+
         .card {
             background: #111826;
             border: 1px solid #1f2a3a;
@@ -44,7 +50,7 @@
             box-shadow: 0 0 20px rgba(0, 255, 213, 0.05);
         }
 
-        h1{
+        h1 {
             color: #00ffd5;
         }
 
@@ -53,13 +59,13 @@
             color: #081018;
             border: none;
             padding: 10px 14px;
-            margin: 6px 6px 0 0; 
+            margin: 6px 6px 0 0;
             cursor: pointer;
             font-weight: bold;
             border-radius: 8px;
         }
-    
-        button:hover{
+
+        button:hover {
             background-color: #00c9aa;
         }
 
@@ -71,25 +77,46 @@
             border-radius: 14px;
             padding: 20px;
         }
-        #resposta{
+
+        #resposta {
             color: #ffffff;
             font-size: 18px;
-            margin-top:10px;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #1f2a3a;
+            color: #131212;
+            box-sizing: border-box;
         }
 
     </style>
 
     <div class="container">
-        <div class=""header">
-        <h1>Jarvis 2.0</h1>
-        <p>Seu centro de automação pessoal</p>
+        <div class="" header">
+            <h1>Jarvis 2.0</h1>
+            <p>Seu centro de automação pessoal</p>
         </div>
-        
+
         <div class="grid">
-            <div class ="card">
-            <h2>Status</h2>
-            <p class="status-text">Verifique rapidamente se o sistema está funcionando.</p>
-            <button onclick="verStatus()">Ver status</button>
+            <div class="card">
+                <h2>Status</h2>
+                <p class="status-text">Verifique rapidamente se o sistema está funcionando.</p>
+                <button onclick="verStatus()">Ver status</button>
+            </div>
+
+            <div class="card">
+                <h2>Tarefas Rapidas</h2>
+                <p class="" status-text>Adicione um tarefa.</p>
+
+                <input type="text" id="novaTarefa" placeholder="Digite sua tarefa..." />
+                <button onclick="adicionarTarefa()">Adicionar tarefa</button>
+                <button onclick="carregarTarefas()">Ver tarefa</button>
             </div>
         </div>
 
@@ -102,67 +129,112 @@
             <button onclick="modoVendas()">Vendas</button>
         </div>
     </div>
-    
+
     <div class="resposta-box">
         <h2>Resposta do sistema</h2>
         <p id="resposta">Aguardando comando...</p>
     </div>
 
+    <div class="resposta-box">
+        <h2>Lista de tarefas</h2>
+        <ul id="listaTarefas"></ul>
+    </div>
+
+
+
     <script>
-        function dizerOla(){
+        function dizerOla() {
             fetch('/comando/ola')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+        function verStatus() {
+            fetch('/status')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+        function Abrir() {
+            fetch('/abrir')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+        function modoClinica() {
+            fetch('/modo/clinica')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+        function modoFaculdade() {
+            fetch('/modo/faculdade')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+        function modoProjeto() {
+            fetch('/modo/projeto')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+        function modoVendas() {
+            fetch('/modo/vendas')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementsById('resposta').innerText = data.msg;
+                });
+        }
+
+        function limparTela() {
+            document.getElementsById('resposta').innerText = "";
+        }   
+        
+        function adicionarTarefa(){
+            const input = document.getElementById('novaTarefa');
+            const texto = input.value.trim();
+
+            if(!texto){
+                document.getElementById('resposta').innerText="Digite uma tarefa antes de adicionar";
+                return;
+            }
+            fetch('/tarefas',{
+                method: 'POST',
+                headers:{
+                    'Contente-Type': 'application/json'
+                },
+                body: JSON.stringify({texto: texto})
+            })
             .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
+            .then(data => {
+                document.getElementById('resposta').innerText = 'Tarefa Adicionada: ${data.texto}';
+                input.value = '';
+                carregarTarefas();
             });
         }
-        function verStatus(){
-            fetch('/status')
+        function carregarTarefas(){
+            fetch('/tarefas')
             .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
-            });
-        } 
-        function Abrir(){
-            fetch('/abrir')
-            .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
-            });
-        } 
-        function modoClinica(){
-            fetch('/modo/clinica')
-            .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
-            });
-        } 
-        function modoFaculdade(){
-            fetch('/modo/faculdade')
-            .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
-            });
-        } 
-        function modoProjeto(){
-            fetch('/modo/projeto')
-            .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
-            });
-        } 
-        function modoVendas(){
-            fetch('/modo/vendas')
-            .then(resp => resp.json())
-            .then(data =>{
-                document.getElementsById('resposta').innerText = data.msg;
-            });
-        } 
+            .then(tarefas => {
+                const lista = document.getElementById('listaTarefa');
+                lista.innerHTML = '';
 
-        function limparTela(){
-                document.getElementsById('resposta').innerText = "";
-        }            
+                tarefas.forEach(tarefa => {
+                    const item = document.createElement('li');
+                    item.innerText = tarefa.texto;
+                    lista.appendChild(item);
+                });
+            });
+        }
     </script>
 
 </body>
+
 </html>
