@@ -7,6 +7,29 @@
 </head>
 <body>
     <h1>Jarvis 2.0</h1>
-    <p>Meu assistente está online.</p>
+    
+    <button onclick="dizerOla()">Falar com Jarvis</button>
+    <button onclick="verStatus()">Ver Status</button>
+    <button onclick="verStatus()">Ver Status</button>
+
+    <p id="resposta"></p>
+
+    <script>
+        function dizerOla(){
+            fetch('/comando/ola')
+            .then(resp => resp.json())
+            .then(data =>{
+                document.getElementsById('resposta').innerText = data.msg;
+            });
+        }
+        function verStatus(){
+            fetch('/status')
+            .then(resp => resp.json())
+            .then(data =>{
+                document.getElementsById('resposta').innerText = data.msg;
+            });
+        } 
+    </script>
+
 </body>
 </html>
