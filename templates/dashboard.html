@@ -9,51 +9,92 @@
 
     <style>
         body{
-            background-color: #0d1117;
-            color: #00ffe1;
-            font-family: Arial;
-            text-align: center;
-            padding-top: 50px;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b0f14;
+            color: #e6edf3;
+        }
+        .container{
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .header h1{
+            margin: 0;
+            color: #00ffd5;
+            font-size: 36px;
+        }
+        .header p {
+            margin-top: 8px;
+            color: #9fb0c0;
+        }
+        .card {
+            background: #111826;
+            border: 1px solid #1f2a3a;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 213, 0.05);
         }
 
-        h1{
-            font-size: 40px;
-        }
-
+    
         button {
-            background-color: #00ffe1;
+            background-color: #00ffd5;
+            color: #081018;
             border: none;
-            padding: 10px 20px;
-            margin: 10px;
+            padding: 10px 14px;
+            margin: 6px 6px 0 0; 
             cursor: pointer;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 8px;
         }
     
         button:hover{
-            background-color: #00bfa6;
+            background-color: #00c9aa;
         }
 
-        #resposta {
-            margin-top: 20px;
-            font-size: 20px;
+        .resposta-box {
+            margin-top: 25px;
+            background: #111826;
+            border: 1px solid #1f2a3a;
+            border-radius: 14px;
+            padding: 20px;
+        }
+        #resposta{
+            color: #ffffff;
+            font-size: 18px;
+            margin-top:10px;
         }
 
     </style>
-    <h2>Modos do Jarvis</h2>
-    <button onclick="modoClinica()">Clínica</button>
-    <button onclick="modoFaculdade()">Faculdade</button>
-    <button onclick="modoProjeto()">Projeto</button>
-    <button onclick="modoVendas()">Vendas</button>
-    
-    <h1>Jarvis 2.0</h1>
-    
-    <button onclick="dizerOla()">Falar com Jarvis</button>
-    <button onclick="verStatus()">Ver Status</button>
-    <button onclick="Abrir()">Abrir</button>
-    <button onclick="limparTela()">Limpar Tela</button>
 
-    <p id="resposta"></p>
+    <div class="container">
+        <div class=""header">
+        <h1>Jarvis 2.0</h1>
+        <p>Seu centro de automação pessoal</p>
+        </div>
+        
+        <div class="grid">
+            <div class ="card">
+            <h2>Status</h2>
+            <p class="status-text">Verifique rapidamente se o sistema está funcionando.</p>
+            <button onclick="verStatus()">Ver status</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Modos do Jarvis</h2>
+            <p class="status-text">Ative um modo de trabalho de acordo com sua rotina.</p>
+            <button onclick="modoClinica()">Clinica</button>
+            <button onclick="modoFaculdade()">Faculdade</button>
+            <button onclick="modoProjeto()">Projeto</button>
+            <button onclick="modoVendas()">Vendas</button>
+        </div>
+    </div>
+    
+    <div class="resposta-box">
+        <h2>Resposta do sistema</h2>
+        <p id="resposta">Aguardando comando...</p>
+    </div>
 
     <script>
         function dizerOla(){

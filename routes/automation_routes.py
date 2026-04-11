@@ -8,15 +8,15 @@ from services.automation_service import(
 
 automation_bp = Blueprint('automation',__name__)
 
-@automation_bp.routes('/status')
+@automation_bp.route('/status')
 def status():
     return jsonify({"status": "ok", "msg": "Jarvis funcionando"})
 
-@automation_bp.routes('/comando/ola')
+@automation_bp.route('/comando/ola')
 def ola():
     return jsonify({"msg":"Olá chefe"})
 
-@automation_bp.routes('/abrir')
+@automation_bp.route('/abrir')
 def abrir():
     return jsonify({"msg":"Comando Executado"})
 
