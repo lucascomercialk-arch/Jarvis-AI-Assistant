@@ -25,7 +25,7 @@ def modo_clinica():
     msg = abrir_modo_clinica()
     return jsonify({"msg": msg})
 
-@automation_bp.route('/modo/faculdae')
+@automation_bp.route('/modo/faculdade')
 def modo_faculdade():
     msg = abrir_modo_faculdade()
     return jsonify({"msg": msg})

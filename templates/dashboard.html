@@ -34,13 +34,15 @@
             margin-top: 8px;
             color: #9fb0c0;
 
-            .grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-                gap: 20px;
-            }
-
         }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+
 
         .card {
             background: #111826;
@@ -94,11 +96,10 @@
             color: #131212;
             box-sizing: border-box;
         }
-
     </style>
 
     <div class="container">
-        <div class="" header">
+        <div class="header">
             <h1>Jarvis 2.0</h1>
             <p>Seu centro de automação pessoal</p>
         </div>
@@ -147,96 +148,126 @@
             fetch('/comando/ola')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
         function verStatus() {
             fetch('/status')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
         function Abrir() {
             fetch('/abrir')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
         function modoClinica() {
             fetch('/modo/clinica')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
         function modoFaculdade() {
             fetch('/modo/faculdade')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
         function modoProjeto() {
             fetch('/modo/projeto')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
         function modoVendas() {
             fetch('/modo/vendas')
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementsById('resposta').innerText = data.msg;
+                    document.getElementById('resposta').innerText = data.msg;
                 });
         }
 
         function limparTela() {
-            document.getElementsById('resposta').innerText = "";
-        }   
-        
-        function adicionarTarefa(){
+            document.getElementById('resposta').innerText = "";
+        }
+
+        function adicionarTarefa() {
             const input = document.getElementById('novaTarefa');
             const texto = input.value.trim();
-    
-            if(!texto){
-                document.getElementById('resposta').innerText="Digite uma tarefa antes de adicionar";
+
+            if (!texto) {
+                document.getElementById('resposta').innerText = "Digite uma tarefa antes de adicionar";
                 return;
             }
 
-            fetch('/tarefas',{
+            fetch('/tarefas', {
                 method: 'POST',
-                headers:{
+                headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({texto: texto})
+                body: JSON.stringify({ texto: texto })
             })
-            .then(resp => resp.json())
-            .then(data => {
-                document.getElementById('resposta').innerText = 'Tarefa Adicionada: ${data.texto}';
-                input.value = '';
-                carregarTarefas();
-            });
-        }
-        function carregarTarefas(){
-            fetch('/tarefas')
-            .then(resp => resp.json())
-            .then(tarefas => {
-                const lista = document.getElementById('listaTarefas');
-                lista.innerHTML = '';
-
-                tarefas.forEach(tarefa => {
-                    const item = document.createElement('li');
-                    item.innerText = tarefa.texto;
-                    lista.appendChild(item);
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementById('resposta').innerText = `Tarefa adicionada: ${data.texto}`;
+                    input.value = '';
+                    carregarTarefas();
                 });
-            });
+        }
+        function carregarTarefas() {
+            fetch('/tarefas')
+                .then(resp => resp.json())
+                .then(tarefas => {
+                    const lista = document.getElementById('listaTarefas');
+                    lista.innerHTML = '';
+
+                    tarefas.forEach(tarefa => {
+                        const item = document.createElement('li');
+                        item.style.marginBottom = '10px';
+
+                        item.innerHTML = `
+                    <strong>${tarefa.texto}</strong> 
+                    [${tarefa.categoria}] 
+                    - ${tarefa.concluida ? 'Concluída' : 'Pendente'}
+                    <button onclick="concluirTarefa(${tarefa.id})">Concluir</button>
+                    <button onclick="removerTarefa(${tarefa.id})">Remover</button>
+                `;
+
+                        lista.appendChild(item);
+                    });
+                });
+        }
+        function concluirTarefa(id) {
+            fetch(`/tarefas/${id}/concluir`, {
+                method: 'PATCH'
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementById('resposta').innerText = `Tarefa concluída: ${data.texto}`;
+                    carregarTarefas();
+                });
         }
 
-        document.getElementById('novaTarefa').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter'){
+        function removerTarefa(id) {
+            fetch(`/tarefas/${id}`, {
+                method: 'DELETE'
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementById('resposta').innerText = data.msg;
+                    carregarTarefas();
+                });
+        }
+
+        document.getElementById('novaTarefa').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
                 adicionarTarefa();
             }
         });

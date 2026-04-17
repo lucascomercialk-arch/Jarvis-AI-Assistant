@@ -12,7 +12,6 @@ def home():
     return render_template('dashboard.html')
 
 
-# Modos Jarvis
 
 if __name__ == '__main__':
     app.run(debug=True)
