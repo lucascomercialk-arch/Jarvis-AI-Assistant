@@ -141,6 +141,14 @@
         <ul id="listaTarefas"></ul>
     </div>
 
+    <h3>Tarefas de hoje</h3>
+    <ul id="tarefasHoje"></ul>
+
+    <h3>Prioridades</h3>
+    <ul id="tarefasPrioridade"></ul>
+
+    <h3>Próxima ação</h3>
+    <p id="proximaAcao"></p>
 
 
     <script>
@@ -271,6 +279,54 @@
                 adicionarTarefa();
             }
         });
+
+        function carregarTarefasHoje() {
+            fetch('/tarefas/hoje')
+                .then(resp => resp.json())
+                .then(tarefas => {
+                    const lista = document.getElementById('tarefasHoje');
+                    lista.innerHTML = '';
+
+                    tarefas.forEach(tarefa => {
+                        const item = document.createElement('li');
+                        item.innerText = tarefa.texto;
+                        lista.appendChild(item);
+                    });
+                });
+        }
+
+        function carregarPrioridades() {
+            fetch('/tarefas/prioridade')
+                .then(resp => resp.json())
+                .then(tarefas => {
+                    const lista = document.getElementById('tarefasPrioridade');
+                    lista.innerHTML = '';
+
+                    tarefas.forEach(tarefa => {
+                        const item = document.createElement('li');
+
+                        item.innerText = `${tarefa.texto} (${tarefa.prioridade})`;
+
+                        if (tarefa.prioridade === "alta") {
+                            item.style.color = "red";
+                        } else if (tarefa.prioridade === "media") {
+                            item.style.color = "orange";
+                        } else {
+                            item.style.color = "lightgreen";
+                        }
+
+                        lista.appendChild(item);
+                    });
+                });
+        }
+
+        function carregarProxima() {
+            fetch('/proxima')
+                .then(resp => resp.json())
+                .then(data => {
+                    document.getElementById('proximaAcao').innerText = data.msg;
+                });
+        }
     </script>
 
 </body>

@@ -3,10 +3,25 @@ from services.task_service import (
     adicionar_tarefa,
     listar_tarefas,
     concluir_tarefa,
-    remover_tarefa
+    remover_tarefa,
+    tarefas_do_dia,
+    tarefas_priorizadas,
+    proxima_acao
 )
 
 task_bp = Blueprint('tasks', __name__)
+
+@task_bp.route('/proxima', methods=['GET'])
+def proxima():
+    return jsonify({"msg": proxima_acao()})
+
+@task_bp.route('/tarefas/prioridade', methods=['GET'])
+def get_prioridade():
+    return jsonify(tarefas_priorizadas())
+
+@task_bp.route('/tarefas/hoje', methods=['GET'])
+def get_tarefas_hoje():
+    return jsonify(tarefas_do_dia())
 
 @task_bp.route('/tarefas', methods=['GET'])
 def get_tarefas():

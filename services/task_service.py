@@ -3,6 +3,35 @@ from datetime import datetime
 
 ARQUIVO = 'tarefas.json'
 
+def proxima_acao():
+    tarefas = tarefas_priorizadas()
+
+    if not tarefas:
+        return "Você está livre. Bom trabalho."
+
+    tarefa = tarefas[0]
+
+    return f"Sua prioridade agora é: {tarefa['texto']}"
+
+def peso_prioridade(prioridade):
+    if prioridade == "alta":
+        return 3
+    elif prioridade == "media":
+        return 2
+    else:
+        return 1
+    
+def tarefas_priorizadas():
+    tarefas = carregar_tarefas()
+
+    tarefas_pendentes = [t for t in tarefas if not t["concluida"]]
+
+    return sorted(
+        tarefas_pendentes,
+        key=lambda t: peso_prioridade(t["prioridade"]),
+        reverse=True
+    )
+
 def tarefas_do_dia():
     tarefas = carregar_tarefas()
     hoje = datetime.now().strftime("%d/%m/%Y")
